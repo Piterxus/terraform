@@ -34,11 +34,11 @@ resource "aws_subnet" "mi_subnet" {
 
 # Crear ec2
 resource "aws_instance" "mi_ec2" {
-    ami           = "ami-0ac4dfaf1c5c0cce9" # us-east-1
-    instance_type = "t2.micro"
-    subnet_id     = aws_subnet.mi_subnet.id # Asignar la subred
-    vpc_security_group_ids = [aws_security_group.gs_migrupo.id]
-    user_data = <<-EOF
+  ami                    = "ami-0ac4dfaf1c5c0cce9" # us-east-1
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.mi_subnet.id # Asignar la subred
+  vpc_security_group_ids = [aws_security_group.gs_migrupo.id]
+  user_data              = <<-EOF
         #!/bin/bash
         # Actualizar el sistema
         yum update -y
@@ -54,21 +54,21 @@ resource "aws_instance" "mi_ec2" {
         # Reiniciar Apache para asegurar que los cambios se apliquen
         systemctl restart httpd  
         EOF
-    
-    tags = {
+
+  tags = {
     Name = "tf-mi_ec2"
   }
 }
 
 resource "aws_security_group" "gs_migrupo" {
-    name = "mi_gs"
+  name = "mi_gs"
 
-    ingress {
-        cidr_blocks = ["0.0.0.0/0"]
-        description = "Acceso al puerto 80 desde el exterior"
-        from_port = 80
-        to_port = 80
-        protocol = "TCP"
-    }
-  
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Acceso al puerto 80 desde el exterior"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+  }
+
 }
