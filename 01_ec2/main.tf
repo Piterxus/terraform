@@ -16,6 +16,8 @@ provider "aws" {
 # Crear VPC
 resource "aws_vpc" "mi_vpc" {
   cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support = true
   tags = {
     Name = "tf-mi_vpc"
   }
@@ -26,11 +28,50 @@ resource "aws_subnet" "mi_subnet" {
   vpc_id            = aws_vpc.mi_vpc.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = "us-east-1a"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "tf-mi_subred"
   }
 }
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.mi_vpc.id
+
+  tags = {
+    Name = "main"
+  }
+}
+
+# Asociar la gateway a la VPC
+resource "aws_internet_gateway_attachment" "gw_attach" {
+  vpc_id              = aws_vpc.mi_vpc.id
+  internet_gateway_id = aws_internet_gateway.gw.id
+}
+
+# Crear una tabla de rutas
+resource "aws_route_table" "rt" {
+  vpc_id = aws_vpc.mi_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+
+  tags = {
+    Name = "main"
+  }
+}
+
+# Asociar la tabla de rutas a la subred
+
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.mi_subnet.id
+  route_table_id = aws_route_table.rt.id
+}
+
+
+
 
 # Crear ec2
 resource "aws_instance" "mi_ec2" {
@@ -38,6 +79,7 @@ resource "aws_instance" "mi_ec2" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.mi_subnet.id # Asignar la subred
   vpc_security_group_ids = [aws_security_group.gs_migrupo.id]
+  associate_public_ip_address = true
   user_data              = <<-EOF
         #!/bin/bash
         # Actualizar el sistema
@@ -62,7 +104,7 @@ resource "aws_instance" "mi_ec2" {
 
 resource "aws_security_group" "gs_migrupo" {
   name = "mi_gs"
-
+  vpc_id = aws_vpc.mi_vpc.id
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Acceso al puerto 80 desde el exterior"
