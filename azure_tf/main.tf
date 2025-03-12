@@ -2,7 +2,7 @@
 #puede ser que la primera vez terraform plan no funcione hay que esperar un poco
 provider "azurerm" {
   features {}
-  subscription_id = "aad46404-f6ce-4ca6-b5d1-6157ac1030cd"
+  subscription_id = "c307213e-8077-46d4-849f-9ca3edde2fe2"
 }
 
 
@@ -57,7 +57,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = file("~/.ssh/1741800800_8371093.pub")
   }
 
   os_disk {
