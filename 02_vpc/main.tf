@@ -4,8 +4,8 @@ provider "aws" {
 
 module "my_vpc" {
   source         = "./modules/vpc"
-  vpc_name       = "MyVPC"
-  cidr_block     = "10.0.0.0/16"
-  public_subnet  = "10.0.1.0/24"
-  private_subnet = "10.0.2.0/24"
+  vpc_name       = var.vpc_name
+  cidr_block     = var.cidr_block
+  public_subnet  = var.public_subnet
+  private_subnet = var.private_subnet
 }
