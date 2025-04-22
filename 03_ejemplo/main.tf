@@ -5,6 +5,7 @@ module "vpc" {
   subnet_publica_cidr = "10.0.1.0/24"
   subnet_publica_cidr_2 = "10.0.3.0/24"
   subnet_privada_cidr = "10.0.2.0/24"
+  subnet_privada_cidr_2 = "10.0.4.0/24"
 }
 
 module "security_group_instance" {
@@ -17,6 +18,11 @@ module "security_group_alb"{
   source              = "./modulos/security_group_alb"
   vpc_id              = module.vpc.vpc_id
   security_group_name = "alb-sg"
+}
+module "security_group_rds" {
+  source              = "./modulos/security_group_rds"
+  vpc_id              = module.vpc.vpc_id
+  security_group_name = "rds-sg"
 }
 module "ec2" {
   source        = "./modulos/ec2"
@@ -74,6 +80,18 @@ module "autoscaling" {
   min_size            = 1  
   max_size            = 3  
 }
+module "rds" {
+  source             = "./modulos/rds"
+  vpc_id             = module.vpc.vpc_id
+  subnet_privada_id  = module.vpc.subnet_privada_id
+  subnet_privada_id_2 = module.vpc.subnet_privada_id_2
+  security_group     = module.security_group_rds.rds_sg_id
+  db_name            = "mi_base_de_datos"
+  db_username        = "admin"
+  db_password        = "adminadmin"
+  db_instance_type   = "db.t3.micro"
+}
+
 
 
 output "vpc_id" {

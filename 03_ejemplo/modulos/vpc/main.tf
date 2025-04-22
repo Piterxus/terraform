@@ -31,12 +31,19 @@ resource "aws_subnet" "subnet_publica_2" {
 resource "aws_subnet" "subnet_privada" {
   vpc_id     = aws_vpc.mi_vpc.id
   cidr_block = var.subnet_privada_cidr
-
+  availability_zone = "us-east-1e"
   tags = {
     Name = "Subred privada"
   }
 }
-
+resource "aws_subnet" "subnet_privada_2" {
+  vpc_id            = aws_vpc.mi_vpc.id
+  cidr_block        = var.subnet_privada_cidr_2
+  availability_zone = "us-east-1f"  
+  tags = {
+    Name = "Subred privada 2"
+  }
+}
 resource "aws_internet_gateway" "mi_igw" {
   vpc_id = aws_vpc.mi_vpc.id
 
