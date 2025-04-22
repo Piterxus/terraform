@@ -63,6 +63,17 @@ module "alb" {
   instance_id_amazon_linux_1 = module.ec2.instance_id
   instance_id_ubuntu_1       = module.ec2_ubuntu.instance_id_ubuntu
 }
+module "autoscaling" {
+  source              = "./modulos/autoscaling"
+  ami_id              = "ami-02e3d076cbd5c28fa"  
+  instance_type       = "t3.large"  
+  security_group_id   = module.security_group_instance.security_group_id
+  subnet_ids          = [module.vpc.subnet_publica_id]  
+  vpc_id              = module.vpc.vpc_id
+  desired_capacity    = 2  
+  min_size            = 1  
+  max_size            = 3  
+}
 
 
 output "vpc_id" {
