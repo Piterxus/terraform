@@ -12,6 +12,15 @@ module "ec2" {
   subnet_id     = module.vpc.subnet_publica_id
 }
 
+module "ec2_ubuntu" {
+  source        = "./modulos/ec2Ubuntu"
+  ami_id        = "ami-0e449927258d45bc4"
+  instance_type = "t2.micro"
+  subnet_id     = module.vpc.subnet_publica_id
+}
+
+
+
 output "vpc_id" {
   value = module.vpc.vpc_id
   
