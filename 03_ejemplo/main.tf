@@ -14,8 +14,8 @@ module "ec2" {
 
 module "ec2_ubuntu" {
   source        = "./modulos/ec2Ubuntu"
-  ami_id        = "ami-0e449927258d45bc4"
-  instance_type = "t2.micro"
+  ami_id        = "ami-084568db4383264d4"
+  instance_type = "t3.micro"
   subnet_id     = module.vpc.subnet_publica_id
 }
 
