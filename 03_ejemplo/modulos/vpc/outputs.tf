@@ -7,3 +7,7 @@ output "subnet_publica_id" {
   value = aws_subnet.subnet_publica.id
 
 }
+
+output "subnet_publica_2_id" {
+  value = aws_subnet.subnet_publica_2.id
+}
