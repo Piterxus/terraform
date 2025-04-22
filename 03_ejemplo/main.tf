@@ -19,6 +19,13 @@ module "ec2_ubuntu" {
   subnet_id     = module.vpc.subnet_publica_id
 }
 
+module "ec2_windows" {
+  source        = "./modulos/ec2Windows"
+  ami_id        = "ami-02e3d076cbd5c28fa"
+  instance_type = "t3.large"
+  subnet_id     = module.vpc.subnet_publica_id
+}
+
 
 
 output "vpc_id" {
@@ -29,4 +36,12 @@ output "vpc_id" {
 output "ec2_id" {
   value = module.ec2.instance_id
   
+}
+
+output "ec2_id_ubuntu" {
+  value = module.ec2_ubuntu.instance_id_ubuntu
+}
+
+output "ec_id_windows" {
+  value = module.ec2_windows.instance_id_windows
 }
