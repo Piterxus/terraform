@@ -26,7 +26,9 @@ module "ec2_windows" {
   subnet_id     = module.vpc.subnet_publica_id
 }
 
-
+module "bucket" {
+  source = "./modulos/bucket"
+}
 
 output "vpc_id" {
   value = module.vpc.vpc_id
@@ -45,3 +47,4 @@ output "ec2_id_ubuntu" {
 output "ec_id_windows" {
   value = module.ec2_windows.instance_id_windows
 }
+
